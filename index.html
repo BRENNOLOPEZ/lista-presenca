@@ -53,7 +53,7 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        #pesquisa {
+        #pesquisa, #lista-presenca, #total-presencas {
             display: none;
         }
     </style>
@@ -98,7 +98,11 @@
         function verificarSenha() {
             let senha = document.getElementById("senha").value;
             if (senha === "listacasamentoluana") {
+                document.getElementById("senha").style.display = "none";
+                document.querySelector("button[onclick='verificarSenha()']").style.display = "none";
                 document.getElementById("pesquisa").style.display = "block";
+                document.getElementById("lista-presenca").style.display = "block";
+                document.getElementById("total-presencas").style.display = "block";
                 db.collection("presencas").get().then(snapshot => {
                     let listaHTML = "";
                     let nomes = [];
@@ -132,5 +136,6 @@
             }
         }
     </script>
+    <p style='font-size: 12px; text-align: center; margin-top: 10px;'>Site criado por <a href='https://www.instagram.com/produtoracactos_/' target='_blank'>Produtora Cactos</a></p>
 </body>
 </html>
