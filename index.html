@@ -11,8 +11,14 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background: url('https://i.postimg.cc/66SFHpN8/LW.png') no-repeat center center fixed;
+            background: url('https://i.postimg.cc/xjJ9j7fb/Sem-T-tulo-2uighjk.png') no-repeat center center fixed;
             background-size: cover;
+        }
+        @media (max-width: 768px) {
+            body {
+                background: url('https://i.postimg.cc/66SFHpN8/LW.png') no-repeat center center fixed;
+                background-size: cover;
+            }
         }
         .container {
             background: rgba(255, 255, 255, 0.9);
@@ -48,7 +54,6 @@
     </div>
 
     <script>
-        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDC0MAv13rpKaUvjIdVrTJzJ9KgG_0-3KA",
             authDomain: "listadepresenca-ddb1f.firebaseapp.com",
@@ -61,8 +66,8 @@
         const db = firebase.firestore();
 
         function confirmarPresenca() {
-            let nome = document.getElementById("nome").value;
-            if (nome.trim()) {
+            let nome = document.getElementById("nome").value.trim();
+            if (nome) {
                 db.collection("presencas").add({ nome: nome }).then(() => {
                     alert("Presença confirmada para " + nome);
                     document.getElementById("nome").value = "";
@@ -81,7 +86,7 @@
 
         function verificarSenha() {
             let senha = document.getElementById("senha").value;
-            if (senha === "listacasamentoluana") {  // Senha atualizada
+            if (senha === "listacasamentoluana") {
                 db.collection("presencas").get().then(snapshot => {
                     let listaHTML = "";
                     snapshot.forEach(doc => {
