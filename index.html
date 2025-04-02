@@ -72,6 +72,7 @@
                 db.collection("presencas").add({ nome: nome }).then(() => {
                     alert("Presença confirmada para " + nome);
                     document.getElementById("nome").value = "";
+                    location.reload();
                 }).catch(error => {
                     alert("Erro ao salvar presença.");
                     console.error(error);
