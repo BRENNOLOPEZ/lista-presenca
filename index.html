@@ -53,6 +53,9 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        #pesquisa {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -95,6 +98,7 @@
         function verificarSenha() {
             let senha = document.getElementById("senha").value;
             if (senha === "listacasamentoluana") {
+                document.getElementById("pesquisa").style.display = "block";
                 db.collection("presencas").get().then(snapshot => {
                     let listaHTML = "";
                     let nomes = [];
