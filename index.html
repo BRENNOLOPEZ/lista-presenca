@@ -49,6 +49,10 @@
             color: blue;
             text-decoration: underline;
         }
+        #total-presencas {
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +65,8 @@
             <h2>Lista de Presença</h2>
             <input type="password" id="senha" placeholder="Digite a senha">
             <button onclick="verificarSenha()">Entrar</button>
+            <p id="total-presencas"></p>
+            <input type="text" id="pesquisa" placeholder="Pesquisar nome" onkeyup="filtrarNomes()">
             <ul id="lista-presenca"></ul>
         </div>
     </div>
@@ -91,16 +97,34 @@
             if (senha === "listacasamentoluana") {
                 db.collection("presencas").get().then(snapshot => {
                     let listaHTML = "";
+                    let nomes = [];
                     snapshot.forEach(doc => {
-                        listaHTML += `<li>${doc.data().nome}</li>`;
+                        let nome = doc.data().nome;
+                        nomes.push(nome);
+                        listaHTML += `<li>${nome}</li>`;
                     });
                     document.getElementById("lista-presenca").innerHTML = listaHTML || "Nenhum convidado confirmou presença ainda.";
+                    document.getElementById("total-presencas").innerText = `Total de Presenças: ${nomes.length}`;
                 }).catch(error => {
                     alert("Erro ao carregar lista.");
                     console.error(error);
                 });
             } else {
                 alert("Senha incorreta!");
+            }
+        }
+
+        function filtrarNomes() {
+            let filtro = document.getElementById("pesquisa").value.toLowerCase();
+            let lista = document.getElementById("lista-presenca");
+            let itens = lista.getElementsByTagName("li");
+            for (let i = 0; i < itens.length; i++) {
+                let nome = itens[i].innerText.toLowerCase();
+                if (nome.includes(filtro)) {
+                    itens[i].style.display = "";
+                } else {
+                    itens[i].style.display = "none";
+                }
             }
         }
     </script>
