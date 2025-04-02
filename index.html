@@ -8,7 +8,19 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
+            margin: 0;
+            padding: 0;
+            background-image: url('LW.png'); /* Substitua 'LW.png' pelo caminho correto se necessário */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
         }
         input, button {
             font-size: 18px;
@@ -35,11 +47,17 @@
         function adicionarNome() {
             var nome = document.getElementById("nome").value;
             if (nome.trim() !== "") {
-                var nomes = JSON.parse(localStorage.getItem("listaPresenca")) || [];
-                nomes.push(nome);
-                localStorage.setItem("listaPresenca", JSON.stringify(nomes));
-                document.getElementById("nome").value = "";
-                alert("Presença confirmada!");
+                fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome: nome })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Presença confirmada!");
+                    document.getElementById("nome").value = "";
+                })
+                .catch(error => alert("Erro ao confirmar presença."));
             } else {
                 alert("Por favor, digite um nome válido.");
             }
@@ -47,17 +65,21 @@
 
         function mostrarLista() {
             var senha = prompt("Digite a senha para ver a lista:");
-            if (senha === "listacasamentoluana") { // Altere a senha conforme necessário
-                var lista = document.getElementById("lista");
-                var adminSection = document.getElementById("adminSection");
-                var nomes = JSON.parse(localStorage.getItem("listaPresenca")) || [];
-                lista.innerHTML = "";
-                nomes.forEach(nome => {
-                    var item = document.createElement("li");
-                    item.textContent = nome;
-                    lista.appendChild(item);
-                });
-                adminSection.style.display = "block";
+            if (senha === "listacasamentoluana") { 
+                fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec')
+                .then(response => response.json())
+                .then(data => {
+                    var lista = document.getElementById("lista");
+                    var adminSection = document.getElementById("adminSection");
+                    lista.innerHTML = "";
+                    data.nomes.forEach(nome => {
+                        var item = document.createElement("li");
+                        item.textContent = nome;
+                        lista.appendChild(item);
+                    });
+                    adminSection.style.display = "block";
+                })
+                .catch(error => alert("Erro ao carregar a lista."));
             } else {
                 alert("Senha incorreta!");
             }
