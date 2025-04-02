@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Presença</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            font-size: 18px;
+            padding: 10px;
+            margin: 10px;
+        }
+        #adminSection {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Confirme sua presença</h2>
+    <input type="text" id="nome" placeholder="Digite seu nome">
+    <button onclick="adicionarNome()">Confirmar</button>
+    
+    <div id="adminSection">
+        <h3>Lista de Presença</h3>
+        <ul id="lista"></ul>
+    </div>
+    
+    <script>
+        function adicionarNome() {
+            var nome = document.getElementById("nome").value;
+            if (nome.trim() !== "") {
+                var nomes = JSON.parse(localStorage.getItem("listaPresenca")) || [];
+                nomes.push(nome);
+                localStorage.setItem("listaPresenca", JSON.stringify(nomes));
+                document.getElementById("nome").value = "";
+                alert("Presença confirmada!");
+            } else {
+                alert("Por favor, digite um nome válido.");
+            }
+        }
+
+        function mostrarLista() {
+            var senha = prompt("Digite a senha para ver a lista:");
+            if (senha === "listacasamentoluana") { // Altere a senha conforme necessário
+                var lista = document.getElementById("lista");
+                var adminSection = document.getElementById("adminSection");
+                var nomes = JSON.parse(localStorage.getItem("listaPresenca")) || [];
+                lista.innerHTML = "";
+                nomes.forEach(nome => {
+                    var item = document.createElement("li");
+                    item.textContent = nome;
+                    lista.appendChild(item);
+                });
+                adminSection.style.display = "block";
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+    </script>
+    
+    <button onclick="mostrarLista()">Acessar Lista (Somente Administrador)</button>
+</body>
+</html>
